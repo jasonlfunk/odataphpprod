@@ -1,9 +1,9 @@
 <?php
-/** 
- * Type to represent String
- * 
+/**
+ * Type to represent OString
+ *
  * PHP version 5.3
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_Providers_Metadata_Type
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -29,12 +29,12 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *  
+ *
  */
 namespace ODataProducer\Providers\Metadata\Type;
 /**
- * Type to represent String
- * 
+ * Type to represent OString
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_Providers_Metadata_Type
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -43,12 +43,12 @@ namespace ODataProducer\Providers\Metadata\Type;
  * @version   GIT: 1.2
  * @link      https://github.com/MSOpenTech/odataphpprod
  */
-class String implements IType
+class OString implements IType
 {
     /**
      * Gets the type code
      * Note: implementation of IType::getTypeCode
-     *   
+     *
      * @return TypeCode
      */
     public function getTypeCode()
@@ -59,10 +59,10 @@ class String implements IType
     /**
      * Checks this type (String) is compactible with another type
      * Note: implementation of IType::isCompatibleWith
-     * 
+     *
      * @param IType $type Type to check compactibility
-     * 
-     * @return boolean 
+     *
+     * @return boolean
      */
     public function isCompatibleWith(IType $type)
     {
@@ -72,11 +72,11 @@ class String implements IType
     /**
      * Validate a value in Astoria uri is in a format for this type
      * Note: implementation of IType::validate
-     * 
-     * @param string $value     The value to validate 
-     * @param string &$outValue The stripped form of $value that can 
+     *
+     * @param string $value     The value to validate
+     * @param string &$outValue The stripped form of $value that can
      *                          be used in PHP expressions
-     * 
+     *
      * @return boolean
      */
     public function validate($value, &$outValue)
@@ -84,7 +84,7 @@ class String implements IType
         if (!is_string($value)) {
             return false;
         }
-        
+
         $outValue = $value;
         return true;
     }
@@ -92,7 +92,7 @@ class String implements IType
     /**
      * Gets full name of this type in EDM namespace
      * Note: implementation of IType::getFullTypeName
-     * 
+     *
      * @return string
      */
     public function getFullTypeName()
@@ -102,20 +102,20 @@ class String implements IType
 
     /**
      * Converts the given string value to string type.
-     * 
+     *
      * @param string $stringValue value to convert.
-     * 
+     *
      * @return string
      */
     public function convert($stringValue)
     {
-        //Consider the odata url option 
+        //Consider the odata url option
         //$filter=ShipName eq 'Antonio%20Moreno%20Taquer%C3%ADa'
         //WebOperationContext will do urldecode, so the clause become
         //$filter=ShipName eq 'Antonio Moreno Taquería', the lexer will
         //give the token as
-        //Token {Text string(25):'Antonio Moreno Taquería', Id: String}, 
-        //this function is used to remove the pre-post quotes from Token::Text 
+        //Token {Text string(25):'Antonio Moreno Taquería', Id: String},
+        //this function is used to remove the pre-post quotes from Token::Text
         //i.e. 'Antonio Moreno Taquería'
         //to Antonio Moreno Taquería
         $len = strlen($stringValue);
@@ -127,12 +127,12 @@ class String implements IType
     }
 
     /**
-     * Convert the given value to a form that can be used in OData uri. 
-     * Note: The calling function should not pass null value, as this 
-     * function will not perform any check for nullability 
-     * 
+     * Convert the given value to a form that can be used in OData uri.
+     * Note: The calling function should not pass null value, as this
+     * function will not perform any check for nullability
+     *
      * @param mixed $value value to convert.
-     * 
+     *
      * @return string
      */
     public function convertToOData($value)

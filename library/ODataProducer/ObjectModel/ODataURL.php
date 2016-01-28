@@ -1,9 +1,9 @@
 <?php
 /**
  * Represents top level link
- * 
+ *
  * PHP version 5.3
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_ObjectModel
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -29,13 +29,13 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  */
 namespace ODataProducer\ObjectModel;
-use ODataProducer\Providers\Metadata\Type\String;
+use ODataProducer\Providers\Metadata\Type\OString;
 /**
  * Type to represents result of $links request.
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_ObjectModel
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -47,9 +47,9 @@ use ODataProducer\Providers\Metadata\Type\String;
 class ODataURL
 {
     /**
-     * 
+     *
      * contains the url value.
-     * @var String
+     * @var OString
      */
     public $oDataUrl;
 

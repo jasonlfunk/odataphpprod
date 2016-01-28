@@ -1,9 +1,9 @@
 <?php
-/** 
+/**
  * Class to represent function signature including function-name
- * 
+ *
  * PHP version 5.3
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_UriProcessor_QueryProcessor_FunctionDescription
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -46,7 +46,7 @@ use ODataProducer\Providers\Metadata\Type\Double;
 use ODataProducer\Providers\Metadata\Type\Decimal;
 use ODataProducer\Providers\Metadata\Type\DateTime;
 use ODataProducer\Providers\Metadata\Type\Int32;
-use ODataProducer\Providers\Metadata\Type\String;
+use ODataProducer\Providers\Metadata\Type\OString;
 use ODataProducer\Providers\Metadata\Type\Boolean;
 use ODataProducer\Providers\Metadata\Type\Void;
 use ODataProducer\Providers\Metadata\Type\Binary;
@@ -54,7 +54,7 @@ use ODataProducer\Providers\Metadata\Type\IType;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\ExpressionType;
 /**
  * Function signatures for operations supported in $filter clause.
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_UriProcessor_QueryProcessor_FunctionDescription
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -82,7 +82,7 @@ class FunctionDescription
 
     /**
      * Create new instance of FunctionDescription
-     * 
+     *
      * @param string  $functionName  Name of the function
      * @param IType   $returnType    Return type
      * @param IType[] $argumentTypes Parameter type
@@ -94,14 +94,14 @@ class FunctionDescription
         $this->argumentTypes = $argumentTypes;
     }
 
-    /**      
+    /**
      * Get the function prototype as string
-     * 
+     *
      * @return string
      */
     public function getProtoTypeAsString()
     {
-        $str = $this->returnType->getFullTypeName() 
+        $str = $this->returnType->getFullTypeName()
             . ' ' . $this->functionName . '(';
         foreach ($this->argumentTypes as $argumentType) {
             $str .= $argumentType->getFullTypeName() . ', ';
@@ -110,170 +110,170 @@ class FunctionDescription
         return rtrim($str, ', ') . ')';
     }
 
-    /**      
+    /**
      * Create function descriptions for supported function-calls in $filter option
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function filterFunctionDescriptions()
     {
         $functions = array(
                             //String Functions
-                            'endswith'      => 
+                            'endswith'      =>
                                 array(
                                     new FunctionDescription(
-                                        'endswith', new Boolean(), 
-                                        array(new String(), new String())
+                                        'endswith', new Boolean(),
+                                        array(new OString(), new OString())
                                     )
                                 ),
-                            'indexof'       => 
+                            'indexof'       =>
                                 array(
                                     new FunctionDescription(
-                                        'indexof', new Int32(), 
-                                        array(new String(), new String())
+                                        'indexof', new Int32(),
+                                        array(new OString(), new OString())
                                     )
                                 ),
-                            'replace'       => 
+                            'replace'       =>
                                 array(
                                     new FunctionDescription(
-                                        'replace', new String(), 
-                                        array(new String(), new String(), new String())
+                                        'replace', new OString(),
+                                        array(new OString(), new OString(), new OString())
                                     )
                                 ),
-                            'startswith'    => 
+                            'startswith'    =>
                                 array(
                                     new FunctionDescription(
-                                        'startswith', new Boolean(), 
-                                        array(new String(), new String())
+                                        'startswith', new Boolean(),
+                                        array(new OString(), new OString())
                                     )
                                 ),
-                            'tolower'       => 
+                            'tolower'       =>
                                 array(
                                     new FunctionDescription(
-                                        'tolower', new String(), 
-                                        array(new String())
+                                        'tolower', new OString(),
+                                        array(new OString())
                                     )
                                 ),
-                            'toupper'       => 
+                            'toupper'       =>
                                 array(
                                     new FunctionDescription(
-                                        'toupper', new String(), 
-                                        array(new String())
+                                        'toupper', new OString(),
+                                        array(new OString())
                                     )
                                 ),
-                            'trim'          => 
+                            'trim'          =>
                                 array(
                                     new FunctionDescription(
-                                        'trim', new String(), 
-                                        array(new String())
+                                        'trim', new OString(),
+                                        array(new OString())
                                     )
                                 ),
-                            'substring'     => 
+                            'substring'     =>
                                 array(
                                     new FunctionDescription(
-                                        'substring', new String(), 
-                                        array(new String(), new Int32())
+                                        'substring', new OString(),
+                                        array(new OString(), new Int32())
                                     ),
                                     new FunctionDescription(
-                                        'substring', new String(), 
-                                        array(new String(), new Int32(), new Int32())
+                                        'substring', new OString(),
+                                        array(new OString(), new Int32(), new Int32())
                                     )
                                 ),
-                            'substringof'   => 
+                            'substringof'   =>
                                 array(
                                     new FunctionDescription(
-                                        'substringof', new Boolean(), 
-                                        array(new String(), new String())
+                                        'substringof', new Boolean(),
+                                        array(new OString(), new OString())
                                     )
                                 ),
-                            'concat'        => 
+                            'concat'        =>
                                 array(
                                     new FunctionDescription(
-                                        'concat', new String(), 
-                                        array(new String(), new String())
+                                        'concat', new OString(),
+                                        array(new OString(), new OString())
                                     )
                                 ),
-                            'length'        => 
+                            'length'        =>
                                 array(
                                     new FunctionDescription(
-                                        'length', new Int32(), 
-                                        array(new String())
+                                        'length', new Int32(),
+                                        array(new OString())
                                     )
                                 ),
                             //DateTime functions
-                            'year'          => 
+                            'year'          =>
                                 array(
                                     new FunctionDescription(
-                                        'year', new Int32(), 
+                                        'year', new Int32(),
                                         array(new DateTime())
                                     )
                                 ),
-                            'month'         => 
+                            'month'         =>
                                 array(
                                     new FunctionDescription(
-                                        'month', new Int32(), 
+                                        'month', new Int32(),
                                         array(new DateTime())
                                     )
                                 ),
-                            'day'           => 
+                            'day'           =>
                                 array(
                                     new FunctionDescription(
-                                        'day', new Int32(), 
+                                        'day', new Int32(),
                                         array(new DateTime())
                                     )
                                 ),
-                            'hour'          => 
+                            'hour'          =>
                                 array(
                                     new FunctionDescription(
-                                        'hour', new Int32(), 
+                                        'hour', new Int32(),
                                         array(new DateTime())
                                     )
                                 ),
-                            'minute'        => 
+                            'minute'        =>
                                 array(
                                     new FunctionDescription(
-                                        'minute', new Int32(), 
+                                        'minute', new Int32(),
                                         array(new DateTime())
                                     )
                                 ),
-                            'second'        => 
+                            'second'        =>
                                 array(
                                     new FunctionDescription(
-                                        'second', new Int32(), 
+                                        'second', new Int32(),
                                         array(new DateTime())
                                     )
                                 ),
                             //Math Functions
-                            'round'         => 
+                            'round'         =>
                                 array(
                                     new FunctionDescription(
-                                        'round', new Decimal(), 
+                                        'round', new Decimal(),
                                         array(new Decimal())
                                     ),
                                     new FunctionDescription(
-                                        'round', new Double(), 
-                                        array(new Double())
-                                    )
-                                ), 
-                            'ceiling'       => 
-                                array(
-                                    new FunctionDescription(
-                                        'ceiling', new Decimal(), 
-                                        array(new Decimal())
-                                    ),
-                                    new FunctionDescription(
-                                        'ceiling', new Double(), 
+                                        'round', new Double(),
                                         array(new Double())
                                     )
                                 ),
-                            'floor'         => 
+                            'ceiling'       =>
                                 array(
                                     new FunctionDescription(
-                                        'floor', new Decimal(), 
+                                        'ceiling', new Decimal(),
                                         array(new Decimal())
                                     ),
                                     new FunctionDescription(
-                                        'floor', new Double(), 
+                                        'ceiling', new Double(),
+                                        array(new Double())
+                                    )
+                                ),
+                            'floor'         =>
+                                array(
+                                    new FunctionDescription(
+                                        'floor', new Decimal(),
+                                        array(new Decimal())
+                                    ),
+                                    new FunctionDescription(
+                                        'floor', new Double(),
                                         array(new Double())
                                     )
                                 )
@@ -282,31 +282,31 @@ class FunctionDescription
         return $functions;
     }
 
-    /** 
+    /**
      * Get function description for string comparison
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function stringComparisionFunctions()
     {
         return array(
             new FunctionDescription(
-                'strcmp', new Int32(), 
-                array(new String(), new String())
+                'strcmp', new Int32(),
+                array(new OString(), new OString())
             )
         );
     }
 
     /**
      * Get function description for datetime comparison
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function dateTimeComparisonFunctions()
     {
         return array(
             new FunctionDescription(
-                'dateTimeCmp', new Int32(), 
+                'dateTimeCmp', new Int32(),
                 array(new DateTime(), new DateTime())
             )
         );
@@ -314,29 +314,29 @@ class FunctionDescription
 
     /**
      * Get function description for guid equality check
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function guidEqualityFunctions()
     {
         return array(
             new FunctionDescription(
-                'guidEqual', new Boolean(), 
+                'guidEqual', new Boolean(),
                 array(new Guid(), new Guid())
             )
         );
     }
-    
+
     /**
      * Get function description for binary equality check
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function binaryEqualityFunctions()
     {
         return array(
             new FunctionDescription(
-                'binaryEqual', new Boolean(), 
+                'binaryEqual', new Boolean(),
                 array(new Binary(), new Binary())
             )
         );
@@ -344,42 +344,42 @@ class FunctionDescription
 
     /**
      * Get function descriptions for arithmetic operations
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function arithmeticOpertionFunctions()
-    {      
+    {
         return array(
             new FunctionDescription(
-                'F', new int16(), 
+                'F', new int16(),
                 array(new int16(), new int16())
             ),
             new FunctionDescription(
-                'F', new int32(), 
+                'F', new int32(),
                 array(new int32(), new int32())
             ),
             new FunctionDescription(
-                'F', new int64(), 
+                'F', new int64(),
                 array(new int64(), new int64())
             ),
             new FunctionDescription(
-                'F', new Single(), 
+                'F', new Single(),
                 array(new Single(), new Single())
             ),
             new FunctionDescription(
-                'F', new Double(), 
+                'F', new Double(),
                 array(new Double(), new Double())
             ),
             new FunctionDescription(
-                'F', new Decimal(), 
+                'F', new Decimal(),
                 array(new Decimal(), new Decimal())
             )
         );
     }
 
-    /**      
+    /**
      * Get function descriptions for arithmetic add operations
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function addOperationFunctions()
@@ -389,7 +389,7 @@ class FunctionDescription
 
     /**
      * Get function descriptions for arithmetic subtract operations
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function substractOperationFunctions()
@@ -397,16 +397,16 @@ class FunctionDescription
         return self::arithmeticOpertionFunctions();
     }
 
-    /**      
+    /**
      * Get function descriptions for logical operations
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function logicalOperationFunctions()
     {
         return array(
             new FunctionDescription(
-                'F', new Boolean(), 
+                'F', new Boolean(),
                 array(new Boolean(), new Boolean())
             )
         );
@@ -414,7 +414,7 @@ class FunctionDescription
 
     /**
      * Get function descriptions for relational operations
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function relationalOperationFunctions()
@@ -423,19 +423,19 @@ class FunctionDescription
             self::arithmeticOpertionFunctions(),
             array(
                 new FunctionDescription(
-                    'F', new Boolean(), 
+                    'F', new Boolean(),
                     array(new Boolean(), new Boolean())
                 ),
                 new FunctionDescription(
-                    'F', new DateTime(), 
+                    'F', new DateTime(),
                     array(new DateTime(), new DateTime())
                 ),
                 new FunctionDescription(
-                    'F', new Guid(), 
+                    'F', new Guid(),
                     array(new Guid(), new Guid())
                 ),
                 new FunctionDescription(
-                    'F', new Boolean(), 
+                    'F', new Boolean(),
                     array(new Binary(), new Binary())
                 )
             )
@@ -444,14 +444,14 @@ class FunctionDescription
 
     /**
      * Get function descriptions for unary not operation
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function notOperationFunctions()
     {
         return array(
             new FunctionDescription(
-                'F', new Boolean(), 
+                'F', new Boolean(),
                 array(new Boolean())
             )
         );
@@ -459,19 +459,19 @@ class FunctionDescription
 
     /**
      * Get function description for checking an operand is null or not
-     * 
+     *
      * @param IType $type Type of the argument to null check function.
-     * 
+     *
      * @return FunctionDescription
      */
     public static function isNullCheckFunction(IType $type)
     {
         return new FunctionDescription('is_null', new Boolean(), array($type));
     }
-    
-    /**      
+
+    /**
      * Get function description for unary negate operator
-     * 
+     *
      * @return array(string, FunctionDescription)
      */
     public static function negateOperationFunctions()
@@ -488,10 +488,10 @@ class FunctionDescription
 
     /**
      * To throw ODataException for incompatible types
-     * 
+     *
      * @param ExpressionToken           $expressionToken Expression token
      * @param array(AbstractExpression) $argExpressions  Array of argument expression
-     * 
+     *
      * @throws ODataException
      * @return void
      */
@@ -510,27 +510,27 @@ class FunctionDescription
 
         ODataException::createSyntaxError(
             Messages::expressionParserInCompactibleTypes(
-                $expressionToken->Text, 
+                $expressionToken->Text,
                 $string, $expressionToken->Position
             )
         );
     }
 
-    /**      
+    /**
      * Validate operands of an arithmetic operation and promote if required
-     * 
+     *
      * @param ExpressionToken    $expressionToken The expression token
      * @param AbstractExpression $leftArgument    The left expression
      * @param AbstractExpression $rightArgument   The right expression
-     * 
+     *
      * @return IType
      */
-    public static function verifyAndPromoteArithmeticOpArguments($expressionToken, 
+    public static function verifyAndPromoteArithmeticOpArguments($expressionToken,
         $leftArgument, $rightArgument
     ) {
-        $function  
+        $function
             = self::findFunctionWithPromotion(
-                self::arithmeticOpertionFunctions(), 
+                self::arithmeticOpertionFunctions(),
                 array($leftArgument, $rightArgument)
             );
         if ($function == null) {
@@ -541,28 +541,28 @@ class FunctionDescription
 
         return $function->returnType;
     }
-    
-    /**      
+
+    /**
      * Validate operands of an logical operation
-     * 
+     *
      * @param ExpressionToken    $expressionToken The expression token
      * @param AbstractExpression $leftArgument    The left expression
      * @param AbstractExpression $rightArgument   The right expression
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws ODataException
      */
-    public static function verifyLogicalOpArguments($expressionToken, 
+    public static function verifyLogicalOpArguments($expressionToken,
         $leftArgument, $rightArgument
     ) {
         $function = self::findFunctionWithPromotion(
-            self::logicalOperationFunctions(), 
+            self::logicalOperationFunctions(),
             array($leftArgument, $rightArgument), false
         );
         if ($function == null) {
             self::incompatibleError(
-                $expressionToken, 
+                $expressionToken,
                 array($leftArgument, $rightArgument)
             );
         }
@@ -570,25 +570,25 @@ class FunctionDescription
 
     /**
      * Validate operands of an relational operation
-     * 
+     *
      * @param ExpressionToken    $expressionToken The expression token
      * @param AbstractExpression $leftArgument    The left argument expression
      * @param AbstractExpression $rightArgument   The right argument expression
-     * 
+     *
      * @return void
      */
-    public static function verifyRelationalOpArguments($expressionToken, 
+    public static function verifyRelationalOpArguments($expressionToken,
         $leftArgument, $rightArgument
     ) {
         //for null operands only equality operators are allowed
         $null = new Null1();
         if ($leftArgument->typeIs($null) || $rightArgument->typeIs($null)) {
-            if ((strcmp($expressionToken->Text, ODataConstants::KEYWORD_EQUAL) != 0) 
+            if ((strcmp($expressionToken->Text, ODataConstants::KEYWORD_EQUAL) != 0)
                 && (strcmp($expressionToken->Text, ODataConstants::KEYWORD_NOT_EQUAL) != 0)
-            ) {                
+            ) {
                 ODataException::createSyntaxError(
                     Messages::expressionParserOperatorNotSupportNull(
-                        $expressionToken->Text, 
+                        $expressionToken->Text,
                         $expressionToken->Position
                     )
                 );
@@ -600,9 +600,9 @@ class FunctionDescription
         //for guid operands only equality operators are allowed
         $guid = new Guid();
         if ($leftArgument->typeIs($guid) && $rightArgument->typeIs($guid)) {
-            if ((strcmp($expressionToken->Text, ODataConstants::KEYWORD_EQUAL) != 0) 
+            if ((strcmp($expressionToken->Text, ODataConstants::KEYWORD_EQUAL) != 0)
                 && (strcmp($expressionToken->Text, ODataConstants::KEYWORD_NOT_EQUAL) != 0)
-            ) {                
+            ) {
                 ODataException::createSyntaxError(
                     Messages::expressionParserOperatorNotSupportGuid(
                         $expressionToken->Text, $expressionToken->Position
@@ -611,14 +611,14 @@ class FunctionDescription
             }
 
             return;
-        }       
-        
+        }
+
         //for binary operands only equality operators are allowed
         $binary = new Binary();
         if ($leftArgument->typeIs($binary) && $rightArgument->typeIs($binary)) {
-            if ((strcmp($expressionToken->Text, ODataConstants::KEYWORD_EQUAL) != 0) 
+            if ((strcmp($expressionToken->Text, ODataConstants::KEYWORD_EQUAL) != 0)
                 && (strcmp($expressionToken->Text, ODataConstants::KEYWORD_NOT_EQUAL) != 0)
-            ) {                
+            ) {
                 ODataException::createSyntaxError(
                     Messages::expressionParserOperatorNotSupportBinary(
                         $expressionToken->Text, $expressionToken->Position
@@ -628,12 +628,12 @@ class FunctionDescription
 
             return;
         }
-        
-        //TODO: eq and ne is valid for 'resource reference' 
+
+        //TODO: eq and ne is valid for 'resource reference'
         //navigation also verify here
 
         $functions = array_merge(
-            self::relationalOperationFunctions(), 
+            self::relationalOperationFunctions(),
             self::stringComparisionFunctions()
         );
         $function = self::findFunctionWithPromotion(
@@ -641,7 +641,7 @@ class FunctionDescription
         );
         if ($function == null) {
             self::incompatibleError(
-                $expressionToken, 
+                $expressionToken,
                 array($leftArgument, $rightArgument)
             );
         }
@@ -649,12 +649,12 @@ class FunctionDescription
 
     /**
      * Validate operands of a unary  operation
-     * 
+     *
      * @param ExpressionToken    $expressionToken The expression token
      * @param AbstractExpression $argExpression   Argument expression
-     * 
+     *
      * @throws ODataException
-     * 
+     *
      * @return void
      */
     public static function validateUnaryOpArguments($expressionToken, $argExpression)
@@ -662,7 +662,7 @@ class FunctionDescription
         //Unary not
         if (strcmp($expressionToken->Text, ODataConstants::KEYWORD_NOT) == 0 ) {
             $function = self::findFunctionWithPromotion(
-                self::notOperationFunctions(), 
+                self::notOperationFunctions(),
                 array($argExpression)
             );
             if ($function == null) {
@@ -679,14 +679,14 @@ class FunctionDescription
             }
         }
     }
-    
+
     /**
      * Check am identifier is a valid filter function
-     * 
-     * @param ExpressionToken $expressionToken The expression token      
-     * 
+     *
+     * @param ExpressionToken $expressionToken The expression token
+     *
      * @throws ODataException
-     * 
+     *
      * @return array(FunctionDescription) Array of matching functions
      */
     public static function verifyFunctionExists($expressionToken)
@@ -694,11 +694,11 @@ class FunctionDescription
         if (!array_key_exists($expressionToken->Text, self::filterFunctionDescriptions())) {
             ODataException::createSyntaxError(
                 Messages::expressionParserUnknownFunction(
-                    $expressionToken->Text, 
+                    $expressionToken->Text,
                     $expressionToken->Position
                 )
             );
-            
+
         }
 
         $filterFunctions =  self::filterFunctionDescriptions();
@@ -706,23 +706,23 @@ class FunctionDescription
     }
 
     /**
-     * Validate operands (arguments) of a function call operation and return 
+     * Validate operands (arguments) of a function call operation and return
      * matching function
-     * 
-     * @param array(FunctionDescription) $functions       List of functions to 
+     *
+     * @param array(FunctionDescription) $functions       List of functions to
      *                                                    be checked
      * @param array(AbstractExpression)  $argExpressions  Function argument
      *                                                    expressions
      * @param ExpressionToken            $expressionToken Expression token
-     * 
+     *
      * @throws ODataException
-     * 
+     *
      * @return FunctionDescription
      */
-    public static function verifyFunctionCallOpArguments($functions, 
+    public static function verifyFunctionCallOpArguments($functions,
         $argExpressions, $expressionToken
     ) {
-        $function 
+        $function
             = self::findFunctionWithPromotion($functions, $argExpressions, false);
         if ($function == null) {
             $protoTypes = null;
@@ -732,8 +732,8 @@ class FunctionDescription
 
             ODataException::createSyntaxError(
                 Messages::expressionLexerNoApplicableFunctionsFound(
-                    $expressionToken->Text, 
-                    $protoTypes, 
+                    $expressionToken->Text,
+                    $protoTypes,
                     $expressionToken->Position
                 )
             );
@@ -743,18 +743,18 @@ class FunctionDescription
     }
 
     /**
-     * Finds a function from the list of functions whose argument types matches 
+     * Finds a function from the list of functions whose argument types matches
      * with types of expressions
-     * 
+     *
      * @param array(FunctionDescription) $functionDescriptions List of functions
-     * @param array(AbstractExpression)  $argExpressions       Function argument 
-     *                                                         expressions 
+     * @param array(AbstractExpression)  $argExpressions       Function argument
+     *                                                         expressions
      * @param Boolean                    $promoteArguments     Function argument
-     * 
-     * @return FunctionDescription/NULL Reference to the matching function if 
+     *
+     * @return FunctionDescription/NULL Reference to the matching function if
      *                                  found else NULL
      */
-    public static function findFunctionWithPromotion($functionDescriptions, 
+    public static function findFunctionWithPromotion($functionDescriptions,
         $argExpressions, $promoteArguments = true
     ) {
         $argCount = count($argExpressions);

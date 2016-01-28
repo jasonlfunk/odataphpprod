@@ -1,9 +1,9 @@
 <?php
 /**
  * Contains Base class for OData Writers which implements IODataWriter.
- * 
+ *
  * PHP version 5.3
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_Writers_Common
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -33,7 +33,7 @@
  */
 namespace ODataProducer\Writers\Common;
 use ODataProducer\Providers\Metadata\Type\Boolean;
-use ODataProducer\Providers\Metadata\Type\String;
+use ODataProducer\Providers\Metadata\Type\OString;
 use ODataProducer\Common\ODataException;
 use ODataProducer\ObjectModel\ODataFeed;
 use ODataProducer\ObjectModel\ODataEntry;
@@ -44,9 +44,9 @@ use ODataProducer\ObjectModel\ODataPropertyContent;
 use ODataProducer\ObjectModel\ODataBagContent;
 use ODataProducer\ObjectModel\ODataProperty;
 use ODataProducer\ObjectModel\ODataMediaLink;
-/** 
+/**
  * Base class for OData writers.
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_Writers_Common
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -58,29 +58,29 @@ use ODataProducer\ObjectModel\ODataMediaLink;
 abstract class BaseODataWriter implements IODataWriter
 {
     /**
-     * 
+     *
      * The service base uri
      * @var uri
      */
     protected $baseUri;
 
     /**
-     * True if the server used version greater than 1 to generate the 
-     * object model instance, False otherwise. 
-     * 
+     * True if the server used version greater than 1 to generate the
+     * object model instance, False otherwise.
+     *
      * @var boolean
      */
     protected $isPostV1;
 
     /**
      * Construct a new instance of BaseODataWriter.
-     * 
+     *
      * @param string  $absoluteServiceUri the absolute uri of the Service.
-     * @param boolean $isPostV1           True if the server used version 
-     *                                    greater than 1 to generate the 
+     * @param boolean $isPostV1           True if the server used version
+     *                                    greater than 1 to generate the
      *                                    object model instance, False otherwise.
      */
-    public function __construct($absoluteServiceUri, $isPostV1) 
+    public function __construct($absoluteServiceUri, $isPostV1)
     {
         $this->baseUri = $absoluteServiceUri;
         $this->isPostV1 = $isPostV1;
@@ -90,7 +90,7 @@ abstract class BaseODataWriter implements IODataWriter
      * Start writing a feed
      *
      * @param ODataFeed &$odataFeed Feed to write
-     * 
+     *
      * @return nothing
      */
     abstract protected function startFeed(ODataFeed &$odataFeed);
@@ -99,16 +99,16 @@ abstract class BaseODataWriter implements IODataWriter
      * Write feed meta data
      *
      * @param ODataFeed &$odataFeed Feed whose metadata to be written
-     * 
+     *
      * @return nothing
      */
     abstract protected function writeFeedMetadata(ODataFeed &$odataFeed);
 
     /**
      * Write end of feed
-     * 
+     *
      * @param ODataFeed &$odataFeed Ending the feed.
-     * 
+     *
      * @return nothing
      */
     abstract protected function endFeed(ODataFeed &$odataFeed);
@@ -117,7 +117,7 @@ abstract class BaseODataWriter implements IODataWriter
      * Start writing a entry
      *
      * @param ODataEntry &$odataEntry Entry to write
-     * 
+     *
      * @return nothing
      */
     abstract protected function startEntry(ODataEntry &$odataEntry);
@@ -126,7 +126,7 @@ abstract class BaseODataWriter implements IODataWriter
      * Write entry meta data
      *
      * @param ODataEntry &$odataEntry Entry whose metadata to be written
-     * 
+     *
      * @return nothing
      */
     abstract protected function writeEntryMetadata(ODataEntry &$odataEntry);
@@ -135,7 +135,7 @@ abstract class BaseODataWriter implements IODataWriter
      * Write end of entry
      *
      * @param ODataEntry &$odataEntry Ending the entry.
-     * 
+     *
      * @return nothing
      */
     abstract protected function endEntry(ODataEntry &$odataEntry);
@@ -145,7 +145,7 @@ abstract class BaseODataWriter implements IODataWriter
      *
      * @param ODataLink &$odatalink Link to write
      * @param Boolean   $isExpanded is link expanded or not.
-     * 
+     *
      * @return nothing
      */
     abstract protected function startLink(ODataLink &$odatalink, $isExpanded);
@@ -155,7 +155,7 @@ abstract class BaseODataWriter implements IODataWriter
      *
      * @param ODataLink &$odatalink Link whose metadata to be written
      * @param Boolean   $isExpanded is link expanded or not.
-     * 
+     *
      * @return nothing
      */
     abstract protected function writeLinkMetadata(ODataLink &$odatalink, $isExpanded);
@@ -164,16 +164,16 @@ abstract class BaseODataWriter implements IODataWriter
      * Write end of link
      *
      * @param boolean $isExpanded is link expanded or not.
-     * 
+     *
      * @return nothing
      */
     abstract protected function endLink($isExpanded);
 
     /**
      * Write the node which hold the entity properties as child
-     * 
-     * @param ODataEntry &$odataEntry ODataEntry object for PreWriteProperties. 
-     * 
+     *
+     * @param ODataEntry &$odataEntry ODataEntry object for PreWriteProperties.
+     *
      * @return nothing
      */
     abstract protected function preWriteProperties(ODataEntry &$odataEntry);
@@ -183,36 +183,36 @@ abstract class BaseODataWriter implements IODataWriter
      *
      * @param ODataProperty &$odataProperty Property to be written
      * @param Boolean       $isTopLevel     Is property top level or not.
-     * 
+     *
      * @return nothing
      */
     abstract protected function beginWriteProperty(
         ODataProperty &$odataProperty, $isTopLevel
     );
-        
+
     /**
      * Write end of a property
-     * 
+     *
      * @param Object $kind Object of the property which need to end.
-     * 
+     *
      * @return nothing
      */
     abstract protected function endWriteProperty($kind);
 
     /**
      * Write after last property
-     * 
+     *
      * @param ODataEntry &$odataEntry ODataEntry object for PostWriteProperties.
-     * 
+     *
      * @return nothing
      */
     abstract protected function postWriteProperties(ODataEntry &$odataEntry);
 
     /**
      * Begin a complex property
-     * 
+     *
      * @param ODataProperty &$odataProperty whose value hold the complex property
-     * 
+     *
      * @return nothing
      */
     abstract protected function beginComplexProperty(
@@ -221,17 +221,17 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * End  complex property
-     * 
+     *
      * @return nothing
      */
     abstract protected function endComplexProperty();
 
     /**
      * Begin an item in a collection
-     *  
-     * @param ODataProperty &$odataBagProperty ODataProperty object to write 
+     *
+     * @param ODataProperty &$odataBagProperty ODataProperty object to write
      * Bag Property.
-     * 
+     *
      * @return nothing
      */
     abstract protected function beginBagPropertyItem(
@@ -240,16 +240,16 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * End an item in a collection
-     * 
+     *
      * @return nothing
      */
     abstract protected function endBagPropertyItem();
 
     /**
      * begin write odata links
-     * 
+     *
      * @param ODataURLCollection &$odataUrlCollection Collection of OdataUrls.
-     * 
+     *
      * @return nothing
      */
     abstract protected function startUrlCollection(
@@ -258,37 +258,37 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * begin write odata url
-     * 
+     *
      * @param ODataURL &$odataUrl object of ODataUrl
-     * 
+     *
      * @return nothing
      */
     abstract protected function startUrl(ODataURL &$odataUrl);
 
     /**
      * Write end of odata url
-     * 
+     *
      * @param ODataURL &$odataUrl Object of ODataUrl.
-     * 
+     *
      * @return nothing
      */
     abstract protected function endUrl(ODataURL &$odataUrl);
 
     /**
      * Write end of odata links
-     * 
+     *
      * @param ODataURLCollection &$odataUrlCollection object of ODataUrlCollection
-     * 
+     *
      * @return nothing
      */
     abstract protected function endUrlCollection(ODataURLCollection &$odataUrlCollection);
 
     /**
      * Write null value
-     * 
+     *
      * @param ODataProperty &$odataProperty ODataProperty object to write null value
      * according to Property type.
-     * 
+     *
      * @return nothing
      */
     abstract protected function writeNullValue(ODataProperty &$odataProperty);
@@ -297,7 +297,7 @@ abstract class BaseODataWriter implements IODataWriter
      * Write basic (primitive) value
      *
      * @param object &$odataProperty object of property to write.
-     * 
+     *
      * @return nothing
      */
     abstract protected function writePrimitiveValue(ODataProperty &$odataProperty);
@@ -308,7 +308,7 @@ abstract class BaseODataWriter implements IODataWriter
      * @param ODataException &$exception              Exception to serialize
      * @param boolean        $serializeInnerException if set to true,
      * serialize the inner exception if $exception is an ODataException.
-     * 
+     *
      * @return nothing
      */
     public static function serializeException(ODataException &$exception, $serializeInnerException)
@@ -321,7 +321,7 @@ abstract class BaseODataWriter implements IODataWriter
      * (2). Using _writeFeedMetadata out feed [Atom]/or collection [JSON] metadata
      *
      * @param ODataFeed &$odataFeed Feed to write
-     * 
+     *
      * @return nothing
      */
     public function writeBeginFeed(ODataFeed &$odataFeed)
@@ -336,7 +336,7 @@ abstract class BaseODataWriter implements IODataWriter
      * (2). Using _writeEntryMetadata write entry [Atom, JSON] metadata
      *
      * @param ODataEntry &$odataEntry Entry to write
-     * 
+     *
      * @return nothing
      */
     public function writeBeginEntry(ODataEntry &$odataEntry)
@@ -347,14 +347,14 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * Start writing a link. This function perform the following sub-tasks:
-     * (1). Using _startLink write starting of Atom link (Navigation link) 
+     * (1). Using _startLink write starting of Atom link (Navigation link)
      * [Atom, JSON]
      * (2). Using _writeLinkMetadata write link metadata [Atom, JSON]
      * Note: This method will not write the expanded result
-     * 
+     *
      * @param ODataLink &$odataLink Link to write.
      * @param Boolean   $isExpanded Is link expanded or not.
-     * 
+     *
      * @return nothing
      */
     public function writeBeginLink(ODataLink &$odataLink, $isExpanded)
@@ -364,10 +364,10 @@ abstract class BaseODataWriter implements IODataWriter
     }
 
     /**
-     * Ending the Link according to how its opened. 
-     * 
+     * Ending the Link according to how its opened.
+     *
      * @param Boolean $isExpanded If link is expanded then end it accordingly.
-     * 
+     *
      * @return nothing
      */
     public function writeEndLink($isExpanded)
@@ -375,11 +375,11 @@ abstract class BaseODataWriter implements IODataWriter
         $this->endLink($isExpanded);
     }
     /**
-     * Write the given collection of properties. 
+     * Write the given collection of properties.
      * (properties of an entity or complex type)
      *
      * @param ODataPropertyContent &$odataPropertyContent Collection of properties.
-     * 
+     *
      * @return nothing
      */
     public function writeBeginProperties(ODataPropertyContent &$odataPropertyContent)
@@ -406,9 +406,9 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * Start writing a top level url using _startUrl [Atom, JSON]
-     * 
+     *
      * @param ODataURL &$oDataUrl Start writing Requested OdataUrl.
-     * 
+     *
      * @return nothing
      */
     public function writeBeginUrl(ODataURL &$oDataUrl)
@@ -418,9 +418,9 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * Start writing a top level url collection using _startCollection [Atom, JSON]
-     * 
+     *
      * @param ODataURLCollection &$odataUrlCollection Start Writing Collection of Url
-     * 
+     *
      * @return nothing
      */
     public function writeBeginUrlCollection(ODataURLCollection &$odataUrlCollection)
@@ -431,9 +431,9 @@ abstract class BaseODataWriter implements IODataWriter
     /**
      * End writing an ODataFeed/ODataEntry/ODataURL/ODataURLCollection/ODataProperty
      * Uses  endFeed, endEntry, endUrl, endUrlCollection and endWriteProperty
-     * 
+     *
      * @param Object $kind Object of top level request.
-     * 
+     *
      * @return nothing
      */
     public function writeEnd($kind)
@@ -453,7 +453,7 @@ abstract class BaseODataWriter implements IODataWriter
 
     /**
      * Get the result as string using _getResult [Atom, JSON]
-     * 
+     *
      * @return String Output in the format of Atom or JSON
      */
     public function getResult()

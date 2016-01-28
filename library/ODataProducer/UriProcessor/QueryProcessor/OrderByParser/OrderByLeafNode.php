@@ -1,11 +1,11 @@
 <?php
 /**
- * Type to represent leaf node of 'OrderBy Tree', a leaf node 
- * in OrderByTree represents last sub path segment of an orderby 
+ * Type to represent leaf node of 'OrderBy Tree', a leaf node
+ * in OrderByTree represents last sub path segment of an orderby
  * path segment.
- * 
+ *
  * PHP version 5.3
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_UriProcessor_QueryProcessor_OrderByParser
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -36,13 +36,13 @@
 namespace ODataProducer\UriProcessor\QueryProcessor\OrderByParser;
 use ODataProducer\UriProcessor\QueryProcessor\AnonymousFunction;
 use ODataProducer\Providers\Metadata\Type\Guid;
-use ODataProducer\Providers\Metadata\Type\String;
+use ODataProducer\Providers\Metadata\Type\OString;
 use ODataProducer\Providers\Metadata\Type\DateTime;
 use ODataProducer\Providers\Metadata\ResourceProperty;
 use ODataProducer\Common\Messages;
 /**
  * Type to represent leaf node of 'OrderBy Tree'.
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_UriProcessor_QueryProcessor_OrderByParser
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -55,7 +55,7 @@ class OrderByLeafNode extends OrderByBaseNode
 {
     /**
      * The order of sorting to be performed using this property
-     * 
+     *
      * @var boolean
      */
     private $_isAscending;
@@ -64,20 +64,20 @@ class OrderByLeafNode extends OrderByBaseNode
 
     /**
      * Constructs new instance of OrderByLeafNode
-     * 
+     *
      * @param string           $propertyName     Name of the property
-     *                                           corrosponds to the 
+     *                                           corrosponds to the
      *                                           sub path segment represented
      *                                           by this node.
      * @param ResourceProperty $resourceProperty Resource property corrosponds
-     *                                           to the sub path 
+     *                                           to the sub path
      *                                           segment represented by this node.
      * @param boolean          $isAscending      The order of sorting to be
      *                                           performed, true for
      *                                           ascending order and false
      *                                           for descending order.
      */
-    public function __construct($propertyName, 
+    public function __construct($propertyName,
         ResourceProperty $resourceProperty, $isAscending
     ) {
         parent::__construct($propertyName, $resourceProperty);
@@ -86,14 +86,14 @@ class OrderByLeafNode extends OrderByBaseNode
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see library/ODataProducer/QueryProcessor/OrderByParser/ODataProducer\QueryProcessor\OrderByParser.OrderByBaseNode::free()
-     * 
+     *
      * @return void
      */
     public function free()
     {
-        // By the time we call this function, the top level sorter function 
+        // By the time we call this function, the top level sorter function
         // will be already generated so we can free
         unset($this->_anonymousFunction);
         $this->_anonymousFunction = null;
@@ -101,9 +101,9 @@ class OrderByLeafNode extends OrderByBaseNode
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see library/ODataProducer/QueryProcessor/OrderByParser/ODataProducer\QueryProcessor\OrderByParser.OrderByBaseNode::getResourceType()
-     * 
+     *
      * @return void
      */
     public function getResourceType()
@@ -113,7 +113,7 @@ class OrderByLeafNode extends OrderByBaseNode
 
     /**
      * To check the order of sorting to be performed.
-     * 
+     *
      * @return boolean
      */
     public function isAscending()
@@ -122,10 +122,10 @@ class OrderByLeafNode extends OrderByBaseNode
     }
 
     /**
-     * Build comparison function for this leaf node. 
+     * Build comparison function for this leaf node.
      *
-     * @param array(string) $ancestors Array of parent properties e.g. 
-     *                                 array('Orders', 'Customer', 
+     * @param array(string) $ancestors Array of parent properties e.g.
+     *                                 array('Orders', 'Customer',
      *                                'Customer_Demographics')
      *
      * @return AnonymousFunction
@@ -142,7 +142,7 @@ class OrderByLeafNode extends OrderByBaseNode
         $accessor1 = null;
         $accessor2 = null;
         $a = $this->_isAscending ? 1 : -1;
-        
+
         foreach ($ancestors as $i => $anscestor) {
             if ($i == 0) {
                 $parameterNames = array (
@@ -151,7 +151,7 @@ class OrderByLeafNode extends OrderByBaseNode
                 $accessor1 = $parameterNames[0];
                 $accessor2 = $parameterNames[1];
                 $flag1 = '$flag1 = ' . 'is_null(' . $accessor1. ') || ';
-                $flag2 = '$flag2 = ' . 'is_null(' . $accessor2. ') || '; 
+                $flag2 = '$flag2 = ' . 'is_null(' . $accessor2. ') || ';
             } else {
                 $accessor1 .= '->' . $anscestor;
                 $accessor2 .= '->' . $anscestor;
@@ -165,21 +165,21 @@ class OrderByLeafNode extends OrderByBaseNode
         $flag1 .= 'is_null(' . $accessor1 . ')';
         $flag2 .= 'is_null(' . $accessor2 . ')';
 
-        $code = "$flag1; 
-             $flag2; 
-             if(\$flag1 && \$flag2) { 
+        $code = "$flag1;
+             $flag2;
+             if(\$flag1 && \$flag2) {
                return 0;
-             } else if (\$flag1) { 
+             } else if (\$flag1) {
                  return $a*-1;
-             } else if (\$flag2) { 
+             } else if (\$flag2) {
                  return $a*1;
              }
-             
+
             ";
         $type = $this->resourceProperty->getInstanceType();
         if ($type instanceof DateTime) {
             $code .= " \$result = strtotime($accessor1) - strtotime($accessor2);";
-        } else if ($type instanceof String) {
+        } else if ($type instanceof OString) {
             $code .= " \$result = strcmp($accessor1, $accessor2);";
         } else if ($type instanceof Guid) {
             $code .= " \$result = strcmp($accessor1, $accessor2);";

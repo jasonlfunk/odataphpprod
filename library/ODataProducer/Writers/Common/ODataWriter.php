@@ -1,9 +1,9 @@
 <?php
 /**
  * Contains ODataWriter class for write content in format (Atom or JSON)
- * 
+ *
  * PHP version 5.3
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_Writers_Common
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -35,7 +35,7 @@ namespace ODataProducer\Writers\Common;
 use ODataProducer\Writers\Atom\AtomODataWriter;
 use ODataProducer\Writers\Json\JsonODataWriter;
 use ODataProducer\Writers\Common\IODataWriter;
-use ODataProducer\Providers\Metadata\Type\String;
+use ODataProducer\Providers\Metadata\Type\OString;
 use ODataProducer\ObjectModel\ODataURL;
 use ODataProducer\ObjectModel\ODataURLCollection;
 use ODataProducer\ObjectModel\ODataFeed;
@@ -48,9 +48,9 @@ use ODataProducer\ObjectModel\ODataProperty;
 use ODataProducer\ObjectModel\XMLAttribute;
 use ODataProducer\Common\ODataException;
 
-/** 
+/**
  * Base class for write the request result to content format (Atom or json).
- * 
+ *
  * @category  ODataPHPProd
  * @package   ODataProducer_Writers_Common
  * @author    Microsoft Open Technologies, Inc. <msopentech@microsoft.com>
@@ -70,13 +70,13 @@ class ODataWriter
 
     /**
      * Creates new instance of ODataWriter
-     * 
+     *
      * @param string  $absoluteServiceUri The absolute service uri.
-     * @param boolean $isPostV1           True if the server used version greater 
-     * than 1 to generate the object model instance, False otherwise. 
+     * @param boolean $isPostV1           True if the server used version greater
+     * than 1 to generate the object model instance, False otherwise.
      * @param string  $writerType         Type of the requested writer.(atom or json)
      */
-    public function __construct($absoluteServiceUri, $isPostV1, $writerType) 
+    public function __construct($absoluteServiceUri, $isPostV1, $writerType)
     {
         if ($writerType === 'json') {
             $this->iODataWriter = new JsonODataWriter($absoluteServiceUri, $isPostV1);
@@ -86,12 +86,12 @@ class ODataWriter
     }
 
     /**
-     * Create odata object model from the request description and transform it to 
+     * Create odata object model from the request description and transform it to
      * required content type form
-     * 
+     *
      * @param string $resultItem Object of requested content.
-     * 
-     * @return string Result in Atom or Json format 
+     *
+     * @return string Result in Atom or Json format
      */
     public function writeRequest ($resultItem)
     {
@@ -101,11 +101,11 @@ class ODataWriter
             $this->writeURLCollection($resultItem);
         } else if ($resultItem instanceof ODataPropertyContent) {
             $this->writeProperty($resultItem);
-        } else if ($resultItem instanceof ODataFeed) { 
+        } else if ($resultItem instanceof ODataFeed) {
             $this->writeFeed($resultItem);
         } else if ($resultItem instanceof ODataEntry) {
             $this->writeEntry($resultItem);
-        } 
+        }
 
         unset ($resultItem);
         return $this->iODataWriter->getResult();
@@ -113,10 +113,10 @@ class ODataWriter
 
     /**
      * Write top level link (url)
-     * 
+     *
      * @param ODataURL $oDataUrl Object of ODataUrl
-     * 
-     * @return String Requested Url in format of Atom or JSON. 
+     *
+     * @return String Requested Url in format of Atom or JSON.
      */
     protected function writeURL (ODataURL $oDataUrl)
     {
@@ -126,9 +126,9 @@ class ODataWriter
 
     /**
      * Write top level link collection
-     * 
+     *
      * @param ODataURLCollection $oDataUrlCollection Object of ODataUrlCollection
-     * 
+     *
      * @return String Requested UrlCollection in format of Atom or JSON.
      */
     protected function writeURLCollection (ODataURLCollection $oDataUrlCollection)
@@ -138,10 +138,10 @@ class ODataWriter
     }
 
     /**
-     * Write top level Feed/Collection 
-     * 
+     * Write top level Feed/Collection
+     *
      * @param ODataFeed $odataFeed Object of ODataFeed
-     * 
+     *
      * @return String Requested ODataFeed in format of Atom or JSON.
      */
     protected function writeFeed (ODataFeed $odataFeed)
@@ -155,9 +155,9 @@ class ODataWriter
 
     /**
      * Write top level entry
-     * 
+     *
      * @param ODataEntry $odataEntry Object of ODataEntry
-     * 
+     *
      * @return String Requested ODataEntry in format of Atom or JSON.
      */
     protected function writeEntry (ODataEntry $odataEntry)
@@ -183,10 +183,10 @@ class ODataWriter
     }
 
     /**
-     * Write top level Property 
-     * 
+     * Write top level Property
+     *
      * @param ODataPropertyContent $propertyContent Object of ODataPropertyContent
-     * 
+     *
      * @return String Requested ODataProperty in format of Atom or JSON.
      */
     protected function writeProperty (ODataPropertyContent $propertyContent)
